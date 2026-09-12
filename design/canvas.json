@@ -1,0 +1,16 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 390, "h": 1780, "title": "A · One Scroll" },
+    { "file": "Practice.dc.html", "x": 560, "y": 0, "w": 390, "h": 844, "title": "B · Practice tab" },
+    { "file": "Progress.dc.html", "x": 1040, "y": 0, "w": 390, "h": 844, "title": "B · Progress tab" },
+    { "file": "Focus.dc.html", "x": 1600, "y": 0, "w": 390, "h": 844, "title": "C · Focus" },
+    { "file": "AfterSession.dc.html", "x": 2080, "y": 0, "w": 390, "h": 844, "title": "C · After session" }
+  ],
+  "annotations": [
+    { "id": "opt-a", "x": 0, "y": -230, "w": 390, "text": "OPTION A · One Scroll\nEverything on a single screen: player, stats, rehearsal script, journal, AI review.\n\nWhy: matches the ask most literally. Zero navigation.\nTradeoff: a long page. The script and journal live below the fold, so rehearsal before sitting means scrolling past the player." },
+    { "id": "opt-b", "x": 560, "y": -230, "w": 870, "text": "OPTION B · Two Tabs\nPractice = script up top, player docked at the bottom. Progress = stats ring, AI read, session log.\n\nWhy: the rehearse-then-play ritual is one screen with nothing else in the way, and the reflective stuff gets room to breathe.\nTradeoff: two places to look. Stats are not on the screen you meditate from." },
+    { "id": "opt-c", "x": 1600, "y": -230, "w": 870, "text": "OPTION C · Focus\nA big dial you press to start. Stats are one quiet line at the top. The script is a sheet you pull up from the bottom, and rating plus notes slide up automatically when the track ends.\n\nWhy: calmest to sit in front of; the moment of play is the whole screen.\nTradeoff: script and journal are one gesture away rather than visible, and editing the script happens inside the sheet." },
+    { "id": "shared", "x": 0, "y": 1900, "w": 900, "text": "Shared across all three\n· Music is picked from the Files app via the folder button (iOS file picker, then cached in the app).\n· The rate-and-notes sheet (see C · After session) appears after any session in every option.\n· Two accounts: the avatar initial in the header switches or signs in the second user.\n· Look: midnight indigo, gold light, Cormorant Garamond display with Manrope body. Original palette in the spirit of the Dispenza aesthetic, not his branding." }
+  ],
+  "launch": { "view": "canvas" }
+}
