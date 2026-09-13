@@ -145,8 +145,8 @@ input, textarea { font: inherit; color: inherit; }
   display: flex; flex-direction: column;
 }
 .sheet.open { transform: translateY(0); }
-.sheet-head { padding: 12px 20px 0; display: flex; flex-direction: column; gap: 14px; flex-shrink: 0; }
-.sheet-body { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 20px calc(var(--safe-bottom) + 24px); display: flex; flex-direction: column; gap: 16px; }
+.sheet-head { padding: 12px 20px 12px; display: flex; flex-direction: column; gap: 14px; flex-shrink: 0; border-bottom: 1px solid var(--line-soft); }
+.sheet-body { position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 20px calc(var(--safe-bottom) + 24px); display: flex; flex-direction: column; gap: 16px; }
 .sheet-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--text-bright); line-height: 1.1; }
 
 /* ---------- cards & text ---------- */
