@@ -14,7 +14,7 @@ export const supabaseConfigured = validUrl(rawUrl) && keyLooksRight
 
 // A human-readable reason shown on the sign-in screen when setup is incomplete.
 export const supabaseSetupProblem = !rawUrl && !rawKey
-  ? 'No .env file found. Copy .env.example to .env and fill in both values.'
+  ? 'VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are not set. On Netlify or Vercel, add them under Environment variables and redeploy. Locally, copy .env.example to .env.'
   : !validUrl(rawUrl)
     ? `VITE_SUPABASE_URL should be a full address like https://abcdefgh.supabase.co (got "${rawUrl ?? ''}").`
     : !keyLooksRight

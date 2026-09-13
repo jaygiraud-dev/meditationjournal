@@ -33,7 +33,7 @@ export function AuthScreen() {
       {!supabaseConfigured && (
         <div className="card gold">
           <div className="label gold">Setup needed</div>
-          <div className="body">{supabaseSetupProblem} Fix the .env file in the project folder, then reload this page.</div>
+          <div className="body">{supabaseSetupProblem}</div>
         </div>
       )}
       <form className="stack" style={{ gap: 14 }} onSubmit={submit}>
