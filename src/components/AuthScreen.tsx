@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { supabase, supabaseConfigured } from '../lib/supabase'
+import { supabase, supabaseConfigured, supabaseSetupProblem } from '../lib/supabase'
 
 export function AuthScreen() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
@@ -33,7 +33,7 @@ export function AuthScreen() {
       {!supabaseConfigured && (
         <div className="card gold">
           <div className="label gold">Setup needed</div>
-          <div className="body">Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env file and rebuild. See the README.</div>
+          <div className="body">{supabaseSetupProblem} Fix the .env file in the project folder, then reload this page.</div>
         </div>
       )}
       <form className="stack" style={{ gap: 14 }} onSubmit={submit}>
