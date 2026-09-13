@@ -8,19 +8,37 @@ export function AuthScreen() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
+  const [sent, setSent] = useState(false)
 
   async function submit(e: FormEvent) {
     e.preventDefault()
     setBusy(true); setError(null); setNotice(null)
     if (mode === 'signup') {
-      const { data, error: err } = await supabase.auth.signUp({ email, password })
+      const { data, error: err } = await supabase.auth.signUp({
+        email, password, options: { emailRedirectTo: window.location.origin },
+      })
       if (err) setError(err.message)
-      else if (!data.session) setNotice('Check your email to confirm your account, then sign in.')
+      else if (!data.session) setSent(true)
     } else {
       const { error: err } = await supabase.auth.signInWithPassword({ email, password })
       if (err) setError(err.message)
     }
     setBusy(false)
+  }
+
+  if (sent) {
+    return (
+      <div className="auth">
+        <div className="stack">
+          <div className="label gold">Meditation Journal</div>
+          <h1 className="auth-title" style={{ margin: 0 }}>Check your email.</h1>
+          <p className="muted" style={{ margin: 0, fontSize: 15 }}>
+            We sent a confirmation link to <strong style={{ color: 'var(--text)' }}>{email}</strong>. Tap the link, then come back here and sign in.
+          </p>
+        </div>
+        <button className="btn outline" onClick={() => { setSent(false); setMode('signin') }}>Back to sign in</button>
+      </div>
+    )
   }
 
   return (
