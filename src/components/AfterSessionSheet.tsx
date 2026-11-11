@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Sheet } from './Sheet'
 import { StarPicker } from './Stars'
+import { AutoTextarea } from './AutoTextarea'
 import { formatDuration } from '../lib/stats'
 import type { FinishedSession } from '../hooks/usePlayer'
 
@@ -40,7 +41,7 @@ export function AfterSessionSheet({ finished, dayNumber, onSave, onDismiss }: Pr
       <StarPicker value={rating} onChange={setRating} />
       <div className="stack">
         <div className="label">Notes</div>
-        <textarea className="textarea" style={{ minHeight: 120 }} value={notes} placeholder="How did it go?" onChange={(e) => setNotes(e.target.value)} />
+        <AutoTextarea minHeight={120} value={notes} placeholder="How did it go?" onChange={setNotes} />
         <div className="chips">
           {QUICK.map((c) => <button key={c} className="chip" onClick={() => addChip(c)}>{c}</button>)}
         </div>

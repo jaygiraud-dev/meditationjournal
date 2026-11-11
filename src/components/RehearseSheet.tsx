@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type TouchEvent } from 'react'
 import { Sheet } from './Sheet'
 import { CheckIcon, PencilIcon, SparkleIcon } from './Icons'
-import { NEW_SELF_KEYS } from '../lib/scriptDefaults'
+import { NEW_SELF_KEYS, STATEMENT_KEYS } from '../lib/scriptDefaults'
+import { AutoTextarea } from './AutoTextarea'
 import type { ScriptSection } from '../lib/types'
 
 type Props = {
@@ -12,11 +13,13 @@ type Props = {
   onOpenReview: () => void
 }
 
-const shortTitle = (s: ScriptSection) => (s.key === 'habits' ? 'Habits' : s.title.split(' ')[0])
+const shortTitle = (s: ScriptSection) => (s.key === 'habits' ? 'Habits' : s.key === 'intention' ? 'Intention' : s.title.split(' ')[0])
 
 function firstLine(sections: ScriptSection[]) {
-  const beliefs = sections.find((s) => s.key === 'beliefs')?.body.trim()
-  if (beliefs) return beliefs.split('\n').filter(Boolean).slice(0, 3).join(' ')
+  for (const key of ['intention', 'beliefs']) {
+    const body = sections.find((s) => s.key === key)?.body.trim()
+    if (body) return body.split('\n').filter(Boolean).slice(0, 3).join(' ')
+  }
   const any = sections.find((s) => s.body.trim())
   return any ? any.body.trim().split('\n')[0] : null
 }
@@ -38,12 +41,20 @@ function SectionChips({ sections, active, onPick }: { sections: ScriptSection[];
 export function RehearsePeek({ sections, onExpand, onOpenReview, onEdit }: {
   sections: ScriptSection[]; onExpand: (key: string) => void; onOpenReview: () => void; onEdit: () => void
 }) {
-  const [chip, setChip] = useState(sections[0]?.key ?? 'thoughts')
+  const [chip, setChip] = useState(sections[0]?.key ?? 'intention')
   const line = firstLine(sections)
   const active = sections.find((s) => s.key === chip) ?? sections[0]
   const shown = active?.body.trim() ? active.body.trim().split('\n').filter(Boolean).slice(0, 3).join(' · ') : null
+  const touch = useRef<{ x: number; y: number } | null>(null)
+  function onTouchStart(e: TouchEvent) { touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY } }
+  function onTouchEnd(e: TouchEvent) {
+    const t = touch.current; touch.current = null
+    if (!t) return
+    const dx = e.changedTouches[0].clientX - t.x, dy = e.changedTouches[0].clientY - t.y
+    if (dy < -30 && Math.abs(dy) > Math.abs(dx)) onExpand(chip)
+  }
   return (
-    <div className="peek">
+    <div className="peek" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <div className="handle" onClick={() => onExpand(chip)} />
       <div className="peek-head" onClick={() => onExpand(chip)}>
         <div>
@@ -57,7 +68,7 @@ export function RehearsePeek({ sections, onExpand, onOpenReview, onEdit }: {
       </div>
       <SectionChips sections={sections} active={chip} onPick={setChip} />
       <div className={`quote ${shown ? '' : 'muted'}`} onClick={() => onExpand(chip)}>
-        {shown ? (active.key === 'beliefs' ? `“${shown}”` : shown) : line ?? 'Tap the pencil to write your script.'}
+        {shown ? (STATEMENT_KEYS.has(active.key) ? `“${shown}”` : shown) : line ?? 'Tap the pencil to write your script.'}
       </div>
     </div>
   )
@@ -123,18 +134,18 @@ export function RehearseSheet({ open, onClose, editing, setEditing, initialKey, 
         <SectionChips sections={sections} active={active} onPick={(k) => jump(k)} />
       </>
     }>
-      {sections.map((s, i) => {
+      {sections.map((s) => {
         const isNew = NEW_SELF_KEYS.has(s.key)
         return (
           <div key={s.key} className="stack" ref={(el) => { sectionRefs.current[s.key] = el }}>
-            {i === 0 && <div className="label">The old self</div>}
-            {i === 3 && <div className="label" style={{ paddingTop: 6 }}>The new self</div>}
-            <div className={`card ${isNew ? 'violet' : ''} ${s.key === 'thoughts' ? 'gold' : ''}`}>
+            {s.key === 'thoughts' && <div className="label" style={{ paddingTop: 6 }}>The old self</div>}
+            {s.key === 'beliefs' && <div className="label" style={{ paddingTop: 6 }}>The new self</div>}
+            <div className={`card ${isNew ? 'violet' : ''} ${s.key === 'intention' ? 'gold' : ''}`}>
               <div className={`label ${isNew ? 'violet' : 'gold'}`}>{s.title}</div>
               {editing ? (
-                <textarea className="textarea" value={s.body} placeholder={placeholderFor(s.key)} onChange={(e) => onUpdate(s.key, e.target.value)} />
+                <AutoTextarea value={s.body} placeholder={placeholderFor(s.key)} onChange={(v) => onUpdate(s.key, v)} />
               ) : (
-                <div className={`body ${s.key === 'beliefs' ? 'serif' : ''} ${s.body.trim() ? '' : 'empty'}`}>
+                <div className={`body ${STATEMENT_KEYS.has(s.key) ? 'serif' : ''} ${s.body.trim() ? '' : 'empty'}`}>
                   {s.body.trim() || 'Nothing written yet'}
                 </div>
               )}
@@ -149,6 +160,7 @@ export function RehearseSheet({ open, onClose, editing, setEditing, initialKey, 
 
 function placeholderFor(key: string) {
   switch (key) {
+    case 'intention': return 'Why you sit, what you are creating…'
     case 'thoughts': return 'The thoughts you are letting go of…'
     case 'habits': return 'What you do on autopilot…'
     case 'emotions': return 'The emotions of the past…'

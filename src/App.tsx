@@ -31,7 +31,7 @@ function Main({ userId, email }: { userId: string; email: string }) {
   const [track, setTrack] = useState<File | null>(null)
   const [open, setOpen] = useState<Open>(null)
   const [editing, setEditing] = useState(false)
-  const [rehearseKey, setRehearseKey] = useState('thoughts')
+  const [rehearseKey, setRehearseKey] = useState('intention')
   const [finished, setFinished] = useState<FinishedSession | null>(null)
 
   useEffect(() => { loadTrack().then(setTrack) }, [])
@@ -85,7 +85,7 @@ function Main({ userId, email }: { userId: string; email: string }) {
       <RehearsePeek
         sections={script.sections}
         onExpand={(key) => { setRehearseKey(key); setEditing(false); setOpen('rehearse') }}
-        onEdit={() => { setRehearseKey('thoughts'); setEditing(true); setOpen('rehearse') }}
+        onEdit={() => { setRehearseKey('intention'); setEditing(true); setOpen('rehearse') }}
         onOpenReview={() => setOpen('review')}
       />
 

@@ -109,6 +109,7 @@ input, textarea { font: inherit; color: inherit; }
 
 /* ---------- sheets ---------- */
 .peek {
+  touch-action: pan-x;
   border-radius: 28px 28px 0 0; padding: 12px 20px calc(var(--safe-bottom) + 22px);
   background: rgba(23, 26, 51, 0.96); border: 1px solid var(--line); border-bottom: 0;
   display: flex; flex-direction: column; gap: 14px;
@@ -146,7 +147,7 @@ input, textarea { font: inherit; color: inherit; }
 }
 .sheet.open { transform: translateY(0); }
 .sheet-head { padding: 12px 20px 12px; display: flex; flex-direction: column; gap: 14px; flex-shrink: 0; border-bottom: 1px solid var(--line-soft); }
-.sheet-body { position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 20px calc(var(--safe-bottom) + 24px); display: flex; flex-direction: column; gap: 16px; }
+.sheet-body { position: relative; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 16px 20px calc(var(--safe-bottom) + 24px); display: flex; flex-direction: column; gap: 16px; }
 .sheet-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--text-bright); line-height: 1.1; }
 
 /* ---------- cards & text ---------- */
@@ -161,11 +162,15 @@ input, textarea { font: inherit; color: inherit; }
 .body.serif { font-family: var(--serif); font-size: 20px; font-style: italic; line-height: 1.4; color: var(--text-bright); }
 .body.empty { color: var(--dim); font-style: italic; }
 .textarea {
-  width: 100%; min-height: 96px; resize: vertical; border-radius: 14px; padding: 12px 14px;
+  display: block; width: 100%; resize: none; overflow: hidden; border-radius: 14px; padding: 12px 14px;
   background: rgba(0, 0, 0, 0.25); border: 1px solid var(--line); color: var(--text);
   font-size: 15px; line-height: 1.5; outline: none;
 }
 .textarea:focus { border-color: rgba(217, 168, 78, 0.5); }
+.autotext { display: flex; flex-direction: column; }
+.grip { height: 26px; display: flex; align-items: center; justify-content: center; touch-action: none; cursor: ns-resize; }
+.grip i { display: block; width: 36px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.18); }
+.grip:active i { background: rgba(240, 198, 106, 0.6); }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .stack { display: flex; flex-direction: column; gap: 8px; }
 .h2 { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--text-bright); }
